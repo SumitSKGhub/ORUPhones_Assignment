@@ -35,17 +35,11 @@ class SplashViewModel extends BaseViewModel{
       //
       // }
     }
+    else{
+      Navigator.pushNamed(context, '/login');
+    }
 
-    // User? user = _auth.currentUser;
-    // if(user == null){
-    //   _navigateToLogin();
-    // }
-    // else if(user.displayName == null || user.displayName!.isEmpty){
-    //   _navigateToConfirmName();
-    // }
-    // else{
-    //   _navigateToHome();
-    // }
+
 
     setBusy(false);
   }

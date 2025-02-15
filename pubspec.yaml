@@ -23,6 +23,7 @@ dependencies:
   firebase_core: ^3.11.0
   firebase_messaging: ^15.2.2
   flutter_local_notifications: ^17.2.3
+  cached_network_image: ^3.4.1
 
 
 dev_dependencies:
@@ -45,8 +46,25 @@ flutter:
     - assets/images/logo/logo_login.png
     - assets/images/logo/logo_group.png
     - assets/images/logo/oru.png
+    - assets/images/logo/oru_logo.png
     - assets/images/logo/PHONES.png
     - assets/images/logo/drawer.png
+    - assets/images/logo/Play.png
+    - assets/images/logo/istore.png
+    - assets/images/logo/instagram.png
+    - assets/images/logo/telegram.png
+    - assets/images/logo/X.png
+    - assets/images/logo/whatsapp.png
+
+    - assets/images/QR.png
+    - assets/images/footer deal.png
+
+    - assets/images/chips/buy.png
+    - assets/images/chips/save.png
+    - assets/images/chips/book.png
+    - assets/images/chips/info.png
+    - assets/images/chips/doc.png
+    - assets/images/chips/FAQ.png
 
 
 
@@ -55,6 +73,7 @@ flutter:
     - assets/images/icons/like_icon.png
     - assets/images/icons/sort_icon.png
     - assets/images/icons/filter_icon.png
+    - assets/images/icons/logout.png
 
 
     - assets/images/large_icons/cart.png

@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/splash': (context) => SplashScreen(),
         '/login': (context) => LoginView(),
-        '/verify-otp': (context) => VerifyOtpView(phoneNumber: '',),
+        '/verify-otp': (context) => VerifyOtpView(),
         '/confirm-name': (context) => ConfirmNameView(),
         '/home': (context) => HomeView(),
       },

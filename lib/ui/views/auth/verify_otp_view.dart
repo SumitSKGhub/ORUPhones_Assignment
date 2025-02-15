@@ -13,7 +13,8 @@ class VerifyOtpView extends StatelessWidget {
   final TextEditingController otpController3 = TextEditingController();
   final TextEditingController otpController4 = TextEditingController();
 
-  VerifyOtpView({super.key,this.isBottomSheet=false,required this.phoneNumber});
+  VerifyOtpView(
+      {super.key, this.isBottomSheet = false, this.phoneNumber=''});
 
   @override
   Widget build(BuildContext context) {
@@ -21,40 +22,66 @@ class VerifyOtpView extends StatelessWidget {
     //     ModalRoute.of(context)!.settings.arguments as String;
 
     return ViewModelBuilder<AuthViewModel>.reactive(
-      viewModelBuilder: () => AuthViewModel(),
-      builder: (context, model, child) => Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            // leading: Icon(Icons.arrow_back),
-            backgroundColor: Colors.white,
-          ),
-          body:
-              Container(
-            padding: EdgeInsets.all(16.0),
+        viewModelBuilder: () => AuthViewModel(),
+        builder: (context, model, child) {
+          final Widget verifyScreen = SizedBox(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize:
-                isBottomSheet ? MainAxisSize.min : MainAxisSize.max,
+                    isBottomSheet ? MainAxisSize.min : MainAxisSize.max,
                 children: [
-                  Image.asset(
-                    "assets/images/logo/logo_login.png",
-                    fit: BoxFit.cover,
-                    height: 80,
-                    width: 150,
-                  ),
-                  SizedBox(
-                    height: 80,
-                  ),
-                  Text(
-                    "Verify Mobile No.",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 35,
-                        color: Color(0xFF3F3E8F)),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  !isBottomSheet
+                      ? Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/logo/logo_login.png",
+                              fit: BoxFit.cover,
+                              height: 80,
+                              width: 150,
+                            ),
+                            SizedBox(
+                              height: 80,
+                            ),
+                            Text(
+                              "Verify Mobile No.",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 35,
+                                  color: Color(0xFF3F3E8F)),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Verify OTP",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                                Spacer(),
+                                GestureDetector(
+                                    onTap: () {
+                                      // Navigator.pushNamed(context, '/home');
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(Icons.close)),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Divider(),
+                            SizedBox(
+                              height: 25,
+                            )
+                          ],
+                        ),
                   Text(
                     textAlign: TextAlign.center,
                     "Please enter the 4 digit verification code sent to you mobile number +91-$phoneNumber via SMS",
@@ -63,7 +90,7 @@ class VerifyOtpView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 120,
+                    height: !isBottomSheet ? 120 : 20,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,8 +105,7 @@ class VerifyOtpView extends StatelessWidget {
                             _OTPField(otpController3, context),
                             SizedBox(width: 12),
                             _OTPField(otpController4, context),
-                          ]
-                      ),
+                          ]),
 
                       // Container(
                       //   child: TextField(
@@ -102,7 +128,7 @@ class VerifyOtpView extends StatelessWidget {
                       //   ),
                       // ),
                       SizedBox(
-                        height: 65,
+                        height: !isBottomSheet ? 65 : 40,
                       ),
                       Text(
                         "Didn't receive OTP?",
@@ -115,10 +141,7 @@ class VerifyOtpView extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 40,
-                  ),
-                  SizedBox(
-                    height: 20,
+                    height: !isBottomSheet ? 60 : 20,
                   ),
                   model.isLoading
                       ? CircularProgressIndicator()
@@ -147,43 +170,29 @@ class VerifyOtpView extends StatelessWidget {
                                 await model.verifyOTP(context, phoneNumber);
                               }
                             },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "Next",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 19),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
-                                )
-                              ],
+                            child: Text(
+                              "Verify OTP",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 19),
                             ),
                           ),
-                        )
-                  // ElevatedButton(
-                  //         onPressed: () async {
-                  //           final enteredOTP = otpController1.text.trim() +
-                  //               otpController2.text.trim() +
-                  //               otpController3.text.trim() +
-                  //               otpController4.text.trim();
-                  //           model.otp = enteredOTP;
-                  //           await model.verifyOTP(context, phoneNumber);
-                  //         },
-                  //         child: Text("Verify OTP"))
-                  ,
+                        ),
                 ],
               ),
             ),
-          )),
-    );
+          );
+
+          if (isBottomSheet) return verifyScreen;
+
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: SafeArea(
+                child: Padding(
+              padding: EdgeInsets.all(16),
+              child: verifyScreen,
+            )),
+          );
+        });
   }
 
   Widget _OTPField(TextEditingController controller, BuildContext context) {

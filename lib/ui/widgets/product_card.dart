@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oruphones/core/models/product_model.dart';
@@ -11,10 +12,21 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final BuildContext hcontext;
 
-  ProductCard({super.key, required this.product, required this.homeViewModel,required this.hcontext});
+  ProductCard(
+      {super.key,
+      required this.product,
+      required this.homeViewModel,
+      required this.hcontext});
 
   @override
   Widget build(BuildContext context) {
+    bool isFav = false;
+    if(homeViewModel.favList.contains(product.listingId)){
+      isFav = true;
+    }
+
+
+
     final List months = [
       'Jan',
       'Feb',
@@ -42,12 +54,21 @@ class ProductCard extends StatelessWidget {
                 borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
                 child: Stack(
                   children: [
-                    Image.network(
-                      product.imageUrl,
+                    CachedNetworkImage(
                       height: 200,
                       width: double.infinity,
                       fit: BoxFit.cover,
+                      imageUrl: product.imageUrl,
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
+                    // Image.network(
+                    //   product.imageUrl,
+                    //   height: 200,
+                    //   width: double.infinity,
+                    //   fit: BoxFit.cover,
+                    // ),
                     product.verified
                         ? Positioned(
                             top: 10,
@@ -79,31 +100,45 @@ class ProductCard extends StatelessWidget {
                     Positioned(
                         top: 10,
                         right: 10,
-                        child:
-                           GestureDetector(
-                             onTap: (){
-                               homeViewModel.launchOTPBottomSheet(hcontext);
-                               print(product.listingId);
-                               if(homeViewModel.favList.contains(product.listingId)){
-                                 print("Already in favorites");
-                               }else{
-                               }
-                               // homeViewModel.favList.contains(product.listingId);
-                               // homeViewModel.like(product.listingId,true);
-                             },
-                               child: Image.asset("assets/images/icons/like_icon.png")
-                           )
-                    ),
-                    Positioned(
-                        bottom: 0,
-                        child: Opacity(
-                          opacity: 0.7,
-                          child: Container(
-                            height: 25,
-                            width: MediaQuery.of(context).size.width, //50,
-                            color: Colors.grey,
-                          ),
+                        child: GestureDetector(
+                            onTap: () {
+
+                              if(!homeViewModel.isLoggedIn){
+                                homeViewModel.launchOTPBottomSheet(hcontext);
+                              }
+                              else{
+                                homeViewModel.getUser();
+                              }
+                              if(isFav){
+                                homeViewModel.like(product.listingId,false);
+                                isFav = false;
+                              }
+                              else{
+                                homeViewModel.like(product.listingId,true);
+                              }
+                              // print(product.listingId);
+                              // if (homeViewModel.favList
+                              //     .contains(product.listingId)) {
+                              //   print("Already in favorites");
+                              // } else {}
+                              // homeViewModel.favList.contains(product.listingId);
+
+                            },
+                            child: Image.asset(
+                                "assets/images/icons/like_icon.png",color: isFav ? Colors.red: Colors.white,)
                         )),
+                    product.negotiate
+                        ? Positioned(
+                            bottom: 0,
+                            child: Opacity(
+                              opacity: 0.7,
+                              child: Container(
+                                height: 25,
+                                width: MediaQuery.of(context).size.width, //50,
+                                color: Colors.grey,
+                              ),
+                            ))
+                        : SizedBox(),
                     product.negotiate
                         ? Positioned(
                             bottom: 4.5,

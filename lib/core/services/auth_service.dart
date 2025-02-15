@@ -2,6 +2,7 @@ import 'dart:convert';
 
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:oruphones/core/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
@@ -86,12 +87,9 @@ class AuthService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print("Logged In or Not?: " + data.toString());
+      // print("Logged In or Not?: " + data["user"].toString());
       print(data["favListings"]);
 
-      final head = response.headers["x-csrf-token"];
-      print("head: ");
-      print(head);
       await prefs.setString("csrf_token", data['csrfToken']);
 
       return data;
@@ -124,17 +122,26 @@ class AuthService {
     return response.statusCode == 200;
   }
 
-  // Future<bool> isLoggedIn() async {
-  //   final response = await http.get(Uri.parse("$baseUrl/isLoggedIn"));
-  //
-  //   final data = jsonDecode(response.body);
-  //   print("Logged In or Not?: "+data);
-  //   // final prefs = await SharedPreferences.getInstance();
-  //   // await prefs.setString("csrf_token", data["csrf_token"]);
-  //   // await prefs.setString("auth_cookie", data["auth_cookie"]);
-  //
-  //   return response.statusCode == 200;
-  // }
+  Future<UserModel?> getUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? authCookie = prefs.getString("auth_cookie");
+
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/isLoggedIn"),
+        headers: {
+          "Cookie": authCookie ?? "",
+        },
+      );
+      final Map<String, dynamic> userData = jsonDecode(response.body);
+      print("User Data: ");
+      print(userData);
+      return UserModel.fromJson(userData["user"]);
+    } catch (e) {
+      print("Error fetching user data: $e");
+      return null;
+    }
+  }
 
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -144,6 +151,10 @@ class AuthService {
       Uri.parse("$baseUrl/logout"),
       headers: {"X-Csrf-Token": csrfToken ?? ""},
     );
+
+    await prefs.remove("auth_cookie");
+    await prefs.remove("csrf_token");
+
   }
 
   Future<void> signOut() async {
