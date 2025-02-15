@@ -3,17 +3,22 @@ import 'package:flutter/material.dart';
 class StretchedButton extends StatelessWidget {
   final String text;
   final bool icon;
+  final String route;
+  final String info;
 
   const StretchedButton(
       {super.key,
       required this.text,
-      required this.icon,});
+      required this.icon,
+      required this.route,
+      required this.info
+      });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 52,
+      height: 62,
       child: TextButton(
         style: TextButton.styleFrom(
           // fixedSize:WidgetStateProperty.all<Size?>(Size(500.0, 70.0)),
@@ -21,6 +26,9 @@ class StretchedButton extends StatelessWidget {
           backgroundColor: Color(0xFF3F3E8F),
         ),
         onPressed: () {
+          if(info!=''){
+            Navigator.pushNamed(context, '/$route');
+          }
         },
         child: Row(
           mainAxisSize: MainAxisSize.min,

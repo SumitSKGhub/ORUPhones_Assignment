@@ -12,22 +12,24 @@ class Product {
   final String created;
   final bool negotiate;
   final bool verified;
+  final String listingId;
 
-  Product(
-      {required this.id,
-      required this.name,
-      required this.imageUrl,
-      required this.price,
-      required this.condition,
-      required this.location,
-      required this.locality,
-        required this.storage,
-        required this.ram,
-        required this.discount,
-        required this.created,
-        required this.negotiate,
-        required this.verified,
-      });
+  Product({
+    required this.id,
+    required this.name,
+    required this.imageUrl,
+    required this.price,
+    required this.condition,
+    required this.location,
+    required this.locality,
+    required this.storage,
+    required this.ram,
+    required this.discount,
+    required this.created,
+    required this.negotiate,
+    required this.verified,
+    required this.listingId,
+  });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -41,10 +43,13 @@ class Product {
       storage: json["deviceStorage"] ?? "unknown",
       // ram: json["deviceRam"]!= "--" ? json["deviceRam"]+"/" : "",
       ram: json["deviceRam"] ?? "",
-      discount: json["discountPercentage"]!= null ? json["discountPercentage"].toString() : "0",
+      discount: json["discountPercentage"] != null
+          ? json["discountPercentage"].toString()
+          : "0",
       created: json["createdAt"] ?? "",
       negotiate: json["openForNegotiation"] ? true : false,
-        verified: json["verified"] ? true : false
+      verified: json["verified"] ? true : false,
+      listingId: json["listingId"] ?? "",
     );
   }
 }

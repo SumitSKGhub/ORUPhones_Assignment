@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oruphones/core/models/product_model.dart';
+import 'package:oruphones/core/services/auth_service.dart';
+import 'package:oruphones/locator.dart';
+import 'package:oruphones/ui/views/home/home_viewmodel.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 class ProductCard extends StatelessWidget {
+  final HomeViewModel homeViewModel;
   final Product product;
+  final BuildContext hcontext;
 
-  const ProductCard({required this.product});
+  ProductCard({super.key, required this.product, required this.homeViewModel,required this.hcontext});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +80,20 @@ class ProductCard extends StatelessWidget {
                         top: 10,
                         right: 10,
                         child:
-                            Image.asset("assets/images/icons/like_icon.png")),
+                           GestureDetector(
+                             onTap: (){
+                               homeViewModel.launchOTPBottomSheet(hcontext);
+                               print(product.listingId);
+                               if(homeViewModel.favList.contains(product.listingId)){
+                                 print("Already in favorites");
+                               }else{
+                               }
+                               // homeViewModel.favList.contains(product.listingId);
+                               // homeViewModel.like(product.listingId,true);
+                             },
+                               child: Image.asset("assets/images/icons/like_icon.png")
+                           )
+                    ),
                     Positioned(
                         bottom: 0,
                         child: Opacity(

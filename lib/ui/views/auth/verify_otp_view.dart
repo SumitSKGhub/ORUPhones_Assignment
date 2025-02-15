@@ -4,15 +4,21 @@ import 'package:oruphones/ui/views/auth/auth_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class VerifyOtpView extends StatelessWidget {
+  final bool isBottomSheet;
+  final String phoneNumber;
+  final _formKey = GlobalKey<FormState>();
+
   final TextEditingController otpController1 = TextEditingController();
   final TextEditingController otpController2 = TextEditingController();
   final TextEditingController otpController3 = TextEditingController();
   final TextEditingController otpController4 = TextEditingController();
 
+  VerifyOtpView({super.key,this.isBottomSheet=false,required this.phoneNumber});
+
   @override
   Widget build(BuildContext context) {
-    final String phoneNumber =
-        ModalRoute.of(context)!.settings.arguments as String;
+    // final String phoneNumber =
+    //     ModalRoute.of(context)!.settings.arguments as String;
 
     return ViewModelBuilder<AuthViewModel>.reactive(
       viewModelBuilder: () => AuthViewModel(),
@@ -23,47 +29,12 @@ class VerifyOtpView extends StatelessWidget {
             backgroundColor: Colors.white,
           ),
           body:
-              // Padding(
-              //   padding: EdgeInsets.all(16.0),
-              //   child: Column(
-              //     children: [
-              //       TextField(
-              //         controller: otpController,
-              //         keyboardType: TextInputType.number,
-              //         decoration: InputDecoration(
-              //           labelText: "Enter OTP",
-              //           border: OutlineInputBorder(),
-              //         ),
-              //       ),
-              //       SizedBox(
-              //         height: 20,
-              //       ),
-              //       model.isLoading
-              //           ? CircularProgressIndicator()
-              //           : ElevatedButton(
-              //               onPressed: () async {
-              //                 model.otp = otpController.text;
-              //                 bool success =
-              //                     await model.verifyOTP(context, phoneNumber);
-              //
-              //                 // if (success) {
-              //                 //   Navigator.pushNamed(context, '/home');
-              //                 // } else {
-              //                 //   ScaffoldMessenger.of(context).showSnackBar(
-              //                 //     SnackBar(content: Text("Invalid OTP! Try Again.")),
-              //                 //   );
-              //                 // }
-              //               },
-              //               child: Text("Verify OTP")
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
               Container(
             padding: EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(
+                mainAxisSize:
+                isBottomSheet ? MainAxisSize.min : MainAxisSize.max,
                 children: [
                   Image.asset(
                     "assets/images/logo/logo_login.png",
@@ -98,16 +69,17 @@ class VerifyOtpView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                        _OTPField(otpController1, context),
+                            _OTPField(otpController1, context),
                             SizedBox(width: 12),
-                        _OTPField(otpController2, context),
+                            _OTPField(otpController2, context),
                             SizedBox(width: 12),
-                        _OTPField(otpController3, context),
+                            _OTPField(otpController3, context),
                             SizedBox(width: 12),
-                        _OTPField(otpController4, context),
-                      ]),
+                            _OTPField(otpController4, context),
+                          ]
+                      ),
 
                       // Container(
                       //   child: TextField(
@@ -150,16 +122,63 @@ class VerifyOtpView extends StatelessWidget {
                   ),
                   model.isLoading
                       ? CircularProgressIndicator()
-                      : ElevatedButton(
-                          onPressed: () async {
-                            final enteredOTP = otpController1.text.trim() +
-                                otpController2.text.trim() +
-                                otpController3.text.trim() +
-                                otpController4.text.trim();
-                            model.otp = enteredOTP;
-                            await model.verifyOTP(context, phoneNumber);
-                          },
-                          child: Text("Verify OTP")),
+                      : SizedBox(
+                          width: double.infinity,
+                          height: 62,
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              // fixedSize:WidgetStateProperty.all<Size?>(Size(500.0, 70.0)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                              backgroundColor: Color(0xFF3F3E8F),
+                            ),
+                            onPressed: () async {
+                              final enteredOTP = otpController1.text.trim() +
+                                  otpController2.text.trim() +
+                                  otpController3.text.trim() +
+                                  otpController4.text.trim();
+                              if (enteredOTP == '') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text("Invalid OTP! Try Again.")));
+                              } else {
+                                model.otp = enteredOTP;
+                                await model.verifyOTP(context, phoneNumber);
+                              }
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Next",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 19),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                  // ElevatedButton(
+                  //         onPressed: () async {
+                  //           final enteredOTP = otpController1.text.trim() +
+                  //               otpController2.text.trim() +
+                  //               otpController3.text.trim() +
+                  //               otpController4.text.trim();
+                  //           model.otp = enteredOTP;
+                  //           await model.verifyOTP(context, phoneNumber);
+                  //         },
+                  //         child: Text("Verify OTP"))
+                  ,
                 ],
               ),
             ),

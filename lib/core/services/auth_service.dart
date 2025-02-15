@@ -8,42 +8,61 @@ class AuthService {
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   final String baseUrl = "http://40.90.224.241:5000";
 
+  Future<bool> checkAuthStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? authCookie = prefs.getString("auth_cookie");
+
+    if (authCookie == null) return false;
+
+    final response = await http.get(
+      Uri.parse("$baseUrl/isLoggedIn"),
+      headers: {
+        "Cookie": authCookie ?? "",
+      },
+    );
+
+    if(response.statusCode == 200){
+      return jsonDecode(response.body)["isLoggedIn"];
+    }
+
+    return false;
+  }
+
   Future<bool> sendOTP(String phoneNumber) async {
     final response = await http.post(
       Uri.parse("$baseUrl/login/otpCreate"),
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: jsonEncode({
-        "countryCode": 91,
-        "mobileNumber": int.parse(phoneNumber)
-      }),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(
+          {"countryCode": 91, "mobileNumber": int.parse(phoneNumber)}),
     );
     print(response.body);
     return response.statusCode == 200;
   }
 
   Future<bool> verifyOTP(String phoneNumber, String otp) async {
-    print("Service-otp: "+otp);
+    print("Service-otp: " + otp);
     final response = await http.post(
       Uri.parse("$baseUrl/login/otpValidate"),
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode(
-          {"countryCode": 91, "mobileNumber": int.parse(phoneNumber), "otp": int.parse(otp)}),
+      body: jsonEncode({
+        "countryCode": 91,
+        "mobileNumber": int.parse(phoneNumber),
+        "otp": int.parse(otp)
+      }),
     );
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      print("Verified?: "+data.toString());
+      print("Verified?: " + data.toString());
 
       print("Header: ");
       print(response.headers);
 
       final cookie = response.headers['set-cookie'];
-      if(cookie!=null){
+      if (cookie != null) {
         print(cookie);
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString("auth_cookie",cookie);
+        await prefs.setString("auth_cookie", cookie);
       }
 
       // final prefs = await SharedPreferences.getInstance();
@@ -54,18 +73,21 @@ class AuthService {
     return false;
   }
 
-  Future<Map<String, dynamic>> getUserData() async{
+  Future<Map<String, dynamic>> getUserData() async {
     final prefs = await SharedPreferences.getInstance();
     String? authCookie = prefs.getString("auth_cookie");
 
-    final response = await http.get(Uri.parse("$baseUrl/isLoggedIn"),
-    headers: {
-      "Cookie": authCookie ?? "",
-    },);
+    final response = await http.get(
+      Uri.parse("$baseUrl/isLoggedIn"),
+      headers: {
+        "Cookie": authCookie ?? "",
+      },
+    );
 
-    if(response.statusCode == 200){
-      final data= jsonDecode(response.body);
-      print("Logged In or Not?: " +data.toString());
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print("Logged In or Not?: " + data.toString());
+      print(data["favListings"]);
 
       final head = response.headers["x-csrf-token"];
       print("head: ");
@@ -73,19 +95,19 @@ class AuthService {
       await prefs.setString("csrf_token", data['csrfToken']);
 
       return data;
-    }else{
-      return{};
+    } else {
+      return {};
     }
   }
 
-  Future<bool> updateUserName(String userName) async{
-
+  Future<bool> updateUserName(String userName) async {
     final prefs = await SharedPreferences.getInstance();
     String? csrfToken = prefs.getString("csrf_token");
     String? authCookie = prefs.getString("auth_cookie");
     print(csrfToken);
 
-    final response = await http.post(Uri.parse("$baseUrl/update"),
+    final response = await http.post(
+      Uri.parse("$baseUrl/update"),
       headers: {
         "Content-Type": "application/json",
         "X-Csrf-Token": csrfToken ?? "",
@@ -123,10 +145,6 @@ class AuthService {
       headers: {"X-Csrf-Token": csrfToken ?? ""},
     );
   }
-
-
-
-
 
   Future<void> signOut() async {
     // await _auth.signOut();

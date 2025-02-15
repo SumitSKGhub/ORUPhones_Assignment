@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oruphones/core/services/auth_service.dart';
 import 'package:oruphones/locator.dart';
+import 'package:oruphones/ui/views/auth/login_view.dart';
 import 'package:stacked/stacked.dart';
 
 class AuthViewModel extends BaseViewModel {
@@ -28,38 +29,46 @@ class AuthViewModel extends BaseViewModel {
     isLoading = false;
     notifyListeners();
 
-    if(success){
-      Navigator.pushNamed(context, '/verify-otp',arguments: phoneNumber);
-      }
-    else{
+    if (success) {
+      Navigator.pushNamed(context, '/verify-otp', arguments: phoneNumber);
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to send OTP. Please try again.")),
       );
     }
   }
 
-  Future<bool> verifyOTP(BuildContext context, String phoneNo) async{
+  Future<bool> verifyOTP(BuildContext context, String phoneNo) async {
     isLoading = true;
     notifyListeners();
-
+    // bool success;
+    //
+    // if(otp != '' || otp.length<4){
     bool success = await _authService.verifyOTP(phoneNo, otp!);
+    // }
+    // else{
+    //   success = false;
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Invalid OTP!")));
+    // }
 
     isLoading = false;
     notifyListeners();
 
-    if(success){
+    if (success) {
       final user = await _authService.getUserData();
 
-      if(user["isLoggedIn"] == null || user["isLoggedIn"] == false || user["user"]["userName"] == null || user["user"]["userName"].isEmpty ){
-        print("User Name: "+user["isLoggedIn"].toString());
+      if (user["isLoggedIn"] == null ||
+          user["isLoggedIn"] == false ||
+          user["user"]["userName"] == null ||
+          user["user"]["userName"].isEmpty) {
+        print("User Name: " + user["isLoggedIn"].toString());
         Navigator.pushNamed(context, '/confirm-name');
-      }else{
+      } else {
         Navigator.pushNamed(context, '/home');
       }
-    }else{
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Invalid OTP! Try Again."))
-      );
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Invalid OTP! Try Again.")));
     }
 
     return success;
@@ -71,7 +80,7 @@ class AuthViewModel extends BaseViewModel {
 
     bool success = await _authService.updateUserName(updatedUserName!);
 
-    if(success){
+    if (success) {
       Navigator.pushNamed(context, '/home');
     }
 
