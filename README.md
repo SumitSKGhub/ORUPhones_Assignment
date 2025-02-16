@@ -4,6 +4,48 @@
 
 OruPhones is a mobile marketplace for buying and selling used phones. This project is a replication of ORUPhones and follows a clean architecture with Stacked state management to ensure modularity, scalability, and maintainability.
 
+## Bonus Features Implemented 🎉
+In addition to the core requirements of the assignment, the following bonus features have been implemented to enhance the app’s functionality and user experience:
+
+✅ 1. Persistent Authentication State
+
+The app maintains the user's authentication status across sessions using SharedPreferences.
+
+On app launch, the Splash Screen checks the authentication state and navigates accordingly.
+
+✅ 2. Stacked State Management for Modular Code
+
+Used Stacked architecture to separate UI and business logic.
+
+ViewModels manage API calls, authentication, and state without affecting UI components.
+
+✅ 3. Bottom Sheet Authentication Flow
+
+Implemented login and OTP verification using Bottom Sheets for a seamless user experience.
+
+Supports both standalone screens and bottom sheets, ensuring modular reuse.
+
+
+✅ 4. Infinite Scroll with Pagination
+
+Implemented lazy loading in the product listing using a ScrollController.
+
+_onScroll() triggers new data fetch only when the user reaches the bottom.
+
+✅ 5. Favorite Products with Local Storage
+
+Users can like/unlike products, and their favorite listings persist using SharedPreferences.
+
+Ensures offline support for favorite products.
+
+✅ 6. Server-Side Sorting
+
+Integrated sorting options via API parameters.
+
+✅ 7. Improved Image Loading Performance
+
+Used CachedNetworkImage to efficiently load product images with placeholders and error handling.
+
 ## Architecture Followed
 
 The project is built using Clean Architecture principles with a separation of concerns:
