@@ -148,7 +148,6 @@ class HomeViewModel extends BaseViewModel {
   bool get isFabVisible => _isFabVisible;
 
   void _onScroll() {
-
     if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {
       if (_isFabVisible) {
         _isFabVisible = false;
