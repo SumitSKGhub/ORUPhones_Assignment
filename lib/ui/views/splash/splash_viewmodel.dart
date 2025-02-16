@@ -17,7 +17,7 @@ class SplashViewModel extends BaseViewModel{
 
   Future<void> handleStartup(BuildContext context) async {
     setBusy(true);
-    // await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 2));
     _permissionService.initNotifications();
     bool isLoggedIn = await _authService.checkAuthStatus();
 

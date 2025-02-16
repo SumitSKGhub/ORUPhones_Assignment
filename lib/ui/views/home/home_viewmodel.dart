@@ -69,16 +69,6 @@ class HomeViewModel extends BaseViewModel {
   String selectedSort = "Value For Money";
 
   void launchOTPBottomSheet(BuildContext contextA) {
-    // showBottomSheet(
-    //     context: context,
-    //
-    //     builder: (context) =>
-    //         Padding(padding: EdgeInsets.all(16.0),
-    //             child: LoginView(
-    //             isBottomSheet: true,contextHome: context,homeViewModel: this,
-    //         ),
-    //         )
-    // );
     showModalBottomSheet(
         backgroundColor: Colors.white,
         context: contextA,
@@ -89,9 +79,9 @@ class HomeViewModel extends BaseViewModel {
         ),
         builder: (context) =>
             DraggableScrollableSheet(
-                initialChildSize: 0.5, // 50% of screen height initially
-                minChildSize: 0.4, // Minimum height
-                maxChildSize: 0.9, // Expand up to 90% of screen
+                initialChildSize: 0.5,
+                minChildSize: 0.4,
+                maxChildSize: 0.9,
                 expand: false,
                 builder: (context, scrollController){
                    return SingleChildScrollView(
@@ -109,34 +99,7 @@ class HomeViewModel extends BaseViewModel {
             );
   }
 
-  void launchOTPVerifyBottomSheet(BuildContext context, String phoneNumber) {
-    showModalBottomSheet(
-        backgroundColor: Colors.white,
-        context: context,
-        useSafeArea: true,
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        ),
-        builder: (context) =>
-            DraggableScrollableSheet(
-                initialChildSize: 0.5, // 50% of screen height initially
-                minChildSize: 0.4, // Minimum height
-                maxChildSize: 0.9, // Expand up to 90% of screen
-                expand: false,
-                builder: (context, scrollController){
-                  return SingleChildScrollView(
-                    controller: scrollController,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16,vertical: 16.0),
-                      child: VerifyOtpView(
-                        isBottomSheet: true
-                      ),
-                    ),
-                  );
-                })
-    );
-  }
+
 
 
 

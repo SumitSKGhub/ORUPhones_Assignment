@@ -188,16 +188,17 @@ class LoginView extends StatelessWidget {
                               if (isBottomSheet) {
                                 if (_formKey.currentState!.validate()) {
                                   model.phoneNumber = phoneController.text;
-                                  model.sendOTP(context);
+                                  model.contextHome = contextHome;
+                                  model.sendOTP(context,true);
                                 }
                                 Navigator.pop(context);
-                                homeViewModel?.launchOTPVerifyBottomSheet(
-                                    contextHome!, model.phoneNumber!);
+                                // model.launchOTPVerifyBottomSheet(
+                                //     contextHome!, model.phoneNumber!);
                               } else {
                                 if (_formKey.currentState!.validate()) {
                                   print("I m not a bottom sheet");
                                   model.phoneNumber = phoneController.text;
-                                  model.sendOTP(context);
+                                  model.sendOTP(context,false);
                                 }
                               }
                             },

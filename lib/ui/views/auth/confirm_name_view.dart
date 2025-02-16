@@ -15,36 +15,7 @@ class ConfirmNameView extends StatelessWidget {
             backgroundColor: Colors.white,
           ),
           backgroundColor: Colors.white,
-          body:
-
-              // Padding(
-              //   padding: EdgeInsets.all(36),
-              //   child: Column(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       Text("Please Tell Us Your Name"),
-              //       TextField(
-              //         controller: nameController,
-              //         decoration: InputDecoration(
-              //           hintText: "Name",
-              //           hintStyle: TextStyle(color: Colors.grey)
-              //         ),
-              //       ),
-              //       model.isLoading
-              //       ? CircularProgressIndicator()
-              //       :
-              //       ElevatedButton(
-              //           onPressed: () {
-              //             model.updatedUserName = nameController.text;
-              //             model.updateUserName(context);
-              //           },
-              //           child: Text("Confirm Name")),
-              //
-              //     ],
-              //   ),
-              // ),
-
-              Container(
+          body: Container(
             padding: EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(
@@ -87,7 +58,7 @@ class ConfirmNameView extends StatelessWidget {
                       Container(
                         child: TextField(
                           controller: nameController,
-                          keyboardType: TextInputType.phone,
+                          keyboardType: TextInputType.name,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(20),
                             border: OutlineInputBorder(
@@ -103,12 +74,47 @@ class ConfirmNameView extends StatelessWidget {
                   ),
                   model.isLoading
                       ? CircularProgressIndicator()
-                      : ElevatedButton(
-                          onPressed: () {
-                            model.updatedUserName = nameController.text;
-                            model.updateUserName(context);
-                          },
-                          child: Text("Confirm Name")),
+                      : SizedBox(
+                          width: double.infinity,
+                          height: 62,
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              // fixedSize:WidgetStateProperty.all<Size?>(Size(500.0, 70.0)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                              backgroundColor: Color(0xFF3F3E8F),
+                            ),
+                            onPressed: () async {
+                              model.updatedUserName = nameController.text;
+                              model.updateUserName(context);
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Confirm Name",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 19),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                  // ElevatedButton(
+                  //         onPressed: () {
+                  //           model.updatedUserName = nameController.text;
+                  //           model.updateUserName(context);
+                  //         },
+                  //         child: Text("Confirm Name")),
                 ],
               ),
             ),
