@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oruphones/ui/views/bottomsheets/sort_view_model.dart';
-import 'package:oruphones/ui/views/filtered_view.dart';
+import 'package:oruphones/ui/bottomsheets/sort_view_model.dart';
 import 'package:oruphones/ui/views/home/home_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 

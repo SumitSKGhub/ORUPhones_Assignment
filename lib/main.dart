@@ -7,7 +7,7 @@ import 'package:oruphones/locator.dart';
 import 'package:oruphones/ui/views/auth/confirm_name_view.dart';
 import 'package:oruphones/ui/views/auth/login_view.dart';
 import 'package:oruphones/ui/views/auth/verify_otp_view.dart';
-import 'package:oruphones/ui/views/bottomsheets/filter_bottomsheet_view.dart';
+import 'package:oruphones/ui/bottomsheets/filter_bottomsheet_view.dart';
 import 'package:oruphones/ui/views/home/home_view.dart';
 import 'package:oruphones/ui/views/splash/splash_screen.dart';
 

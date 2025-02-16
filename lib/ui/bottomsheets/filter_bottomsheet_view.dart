@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:oruphones/ui/views/bottomsheets/filter_view_model.dart';
+import 'package:oruphones/ui/bottomsheets/filter_view_model.dart';
 import 'package:oruphones/ui/views/home/home_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 

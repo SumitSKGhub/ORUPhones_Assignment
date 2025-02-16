@@ -10,9 +10,9 @@ import 'package:oruphones/core/services/product_service.dart';
 import 'package:oruphones/locator.dart';
 import 'package:oruphones/ui/views/auth/login_view.dart';
 import 'package:oruphones/ui/views/auth/verify_otp_view.dart';
-import 'package:oruphones/ui/views/bottomsheets/filter_bottomsheet_view.dart';
-import 'package:oruphones/ui/views/bottomsheets/sort_bottomsheet_view.dart';
-import 'package:oruphones/ui/views/bottomsheets/sort_view_model.dart';
+import 'package:oruphones/ui/bottomsheets/filter_bottomsheet_view.dart';
+import 'package:oruphones/ui/bottomsheets/sort_bottomsheet_view.dart';
+import 'package:oruphones/ui/bottomsheets/sort_view_model.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeViewModel extends BaseViewModel {
@@ -130,8 +130,7 @@ class HomeViewModel extends BaseViewModel {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16,vertical: 16.0),
                       child: VerifyOtpView(
-                        isBottomSheet: true,
-                        phoneNumber: phoneNumber,
+                        isBottomSheet: true
                       ),
                     ),
                   );

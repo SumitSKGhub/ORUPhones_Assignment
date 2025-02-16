@@ -5,7 +5,6 @@ import 'package:stacked/stacked.dart';
 
 class VerifyOtpView extends StatelessWidget {
   final bool isBottomSheet;
-  final String phoneNumber;
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController otpController1 = TextEditingController();
@@ -14,12 +13,12 @@ class VerifyOtpView extends StatelessWidget {
   final TextEditingController otpController4 = TextEditingController();
 
   VerifyOtpView(
-      {super.key, this.isBottomSheet = false, this.phoneNumber=''});
+      {super.key, this.isBottomSheet = false});
 
   @override
   Widget build(BuildContext context) {
-    // final String phoneNumber =
-    //     ModalRoute.of(context)!.settings.arguments as String;
+    final String phoneNumber =
+        ModalRoute.of(context)!.settings.arguments as String;
 
     return ViewModelBuilder<AuthViewModel>.reactive(
         viewModelBuilder: () => AuthViewModel(),
@@ -84,7 +83,7 @@ class VerifyOtpView extends StatelessWidget {
                         ),
                   Text(
                     textAlign: TextAlign.center,
-                    "Please enter the 4 digit verification code sent to you mobile number +91-$phoneNumber via SMS",
+                    "Please enter the 4 digit verification code sent to you mobile number +91-${phoneNumber} via SMS",
                     style: TextStyle(
                       fontSize: 15,
                     ),

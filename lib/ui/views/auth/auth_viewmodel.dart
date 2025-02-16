@@ -23,6 +23,8 @@ class AuthViewModel extends BaseViewModel {
   Future<void> sendOTP(BuildContext context) async {
     isLoading = true;
     notifyListeners();
+    Future.delayed(Duration(seconds: 1));
+    print(phoneNumber);
 
     bool success = await _authService.sendOTP(phoneNumber!);
 
